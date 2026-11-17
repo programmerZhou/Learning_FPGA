@@ -1,8 +1,18 @@
-# Keep all HDL source files
-*.vhd
-*.v
+# ============================================================
+# 默认：不写 *.v / *.vhd 规则 → 源文件自动保留
+# 下面只列出“要忽略的自动生成物”
+# ============================================================
 
-# Ignore Quartus II / Prime generated files
+# ============================================================
+# 1. 兜底保护 doc 目录（防止被后面任何规则误伤）
+# ============================================================
+!doc/**
+!*/doc/**
+!**/doc/**
+
+# ============================================================
+# 2. Quartus 自动生成的文件（保留 .qpf/.qsf/.qip/.ppf 工程文件）
+# ============================================================
 *_generation_script*
 *_inst.vhd
 *.bak
@@ -10,9 +20,7 @@
 *.done
 *.eqn
 *.hex
-*.html
 *.jdi
-*.jpg
 *.mif
 *.pin
 *.pof
@@ -25,22 +33,58 @@
 *.sof
 *.sopc_builder
 *.summary
-*.tcl
-*.txt
 
-# Ignore Quartus generated folders
+# Quartus IP / 编译中间产物（自动生成）
+greybox_tmp/
+PLLJ_PLLSPE_INFO.txt
+*.tis_db_list.ddb
+*.cdf
+*.jic
+*.map
+*.sld
+*.stp
+*.qdb
+*.ddb
+
+# Quartus 生成目录
 */db/
 */incremental_db/
 */simulation/
 */timing/
-*/testbench/
-*/*_sim/
 incremental_db/
 db/
-_output_files/
+output_files/
+**/output_files/
 
-# Ignore temporary and cache files
+# 生成脚本/报告：限定在输出目录，避免误伤手写 .tcl/.txt
+**/db/*.tcl
+**/db/*.txt
+**/output_files/*.tcl
+**/output_files/*.txt
+**/*_generation_script*.tcl
+
+# ============================================================
+# 3. ModelSim / QuestaSim 自动生成的仿真输出
+#    （保留 .mpf 工程文件，只忽略运行产物）
+# ============================================================
+*.wlf
+*.wlf.*
+*.vstf
+*.vcd
+*.fsdb
+msim_transcript
+transcript
+vsim.wlf
+work/
+*_sim/
+simulation/
+modelsim.ini
+
+# ============================================================
+# 4. 临时/缓存/锁文件（自动生成）
+# ============================================================
 *~
+~$*
 *.log
 *.tmp
 *.vs/
@@ -52,7 +96,6 @@ _output_files/
 *.scc
 *.pidb
 *.svclog
-*.scc
 *.vc.db
 *.opendb
 *.opensdf
